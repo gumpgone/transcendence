@@ -279,7 +279,7 @@ Fin S1: Partie remote minimale jouable (sans chat).
 
 ## Short List – Répartition Modules
 
-Wassim (Dev A – Backend & Infra)
+Wassim (Dev W – Backend & Infra)
 - Major: Backend Framework (Fastify)
 - Major: Standard User Management (auth, sessions, friends, avatars)
 - Major: Live Chat (stockage + endpoints + blocage)
@@ -287,7 +287,7 @@ Wassim (Dev A – Backend & Infra)
 - Minor: Stats Dashboards (agrégations / API)
 - Minor: Game Customization (table + validation)
 
-Greg (Dev B – Gameplay / Temps Réel / IA)
+Greg (Dev G – Gameplay / Temps Réel / IA)
 - Major: Remote Players (WS protocole, sync, déconnexions)
 - Major: AI Opponent (logique prédiction / inputs simulés)
 - Major: Live Chat (événements temps réel, invitations)
@@ -295,7 +295,7 @@ Greg (Dev B – Gameplay / Temps Réel / IA)
 - Minor: Stats Dashboards (instrumentation match)
 - (Core) Tournoi & Matchmaking (structure + annonces)
 
-Mehdi (Dev C – Frontend & UX)
+Mehdi (Dev M – Frontend & UX)
 - Minor: Frontend Toolkit (Tailwind)
 - Major: Standard User Management (UI formulaires / profils)
 - Major: Live Chat (UI DM / global / invites / profils)
