@@ -164,3 +164,115 @@ SERVER -> CLIENT:
 
 Version: 1.0  
 Révisions futures: ajouter détail protocole, format stats, schéma config puissance/power-ups.
+
+## Répartition Équipe (3 personnes)
+
+### Rôles principaux
+- Dev A – Backend & Infra:
+  - Fastify (API/WS), Docker, migrations SQLite, schéma, auth (sessions/hash), sécurité (HTTPS, headers, validation), rate limiting, seed/scripts.
+- Dev B – Gameplay & Temps réel & IA:
+  - Moteur Pong serveur (boucle, physique), protocole WS, remote players, matchmaking + tournoi, AI opponent, game customization (application serveur), synchronisation état, anti-désync.
+- Dev C – Frontend & UX:
+  - SPA (router), composants UI (auth, lobby, tournoi, chat, match viewer), Tailwind, gestion état client, formulaires + validation, dashboards stats, pages profil.
+
+### Tâches transverses (rotation)
+- QA/tests (e2e script simulation)
+- Revue code croisée (PR ≤ 300 lignes)
+- Documentation protocole (B rédige, A/C valident)
+- Sécurité (A lead, B/C check)
+
+### Par phase (parallélisation)
+
+Phase 0  
+- B: moteur local (logique pure, API step())  
+- C: structure SPA + router + layout + thème Tailwind  
+- A: repo, lint, Docker base, scripts dev (hot reload), config env  
+
+Phase 1  
+- A: migrations v1 + tables users/matches/chat + endpoints /health /auth  
+- B: adaptation moteur côté serveur (tick fixe) + interface réseau abstraite  
+- C: écrans Login/Register (mock), page Match placeholder, shell tournoi  
+
+Phase 2 (User Management)  
+- A: auth réelle (hash, sessions), protection routes, avatars stockage  
+- C: intégration auth réelle + profil utilisateur + liste joueurs  
+- B: prépare structure matchmaking (structures en mémoire)  
+
+Phase 3 (Remote players)  
+- B: protocole WS (JOIN_MATCH, INPUT, STATE), rooms + interpolation suggestions  
+- A: persistance match lifecycle (start/end) + enregistrement scores  
+- C: UI spectateur + affichage latence + contrôles clavier abstraits  
+
+Phase 4 (Chat)  
+- B: types événements CHAT / INVITE réutilisant même canal  
+- A: table chat_messages + filtres XSS + rate limit  
+- C: UI chat (global / DM / match), invites → flux création partie  
+
+Phase 5 (AI)  
+- B: module IA (prédiction rebonds, jitter), substitution joueur déco  
+- A: flag is_ai dans match_players + seed matches IA vs IA  
+- C: toggle “Play vs AI” + badge IA dans UI  
+
+Phase 6 (Customization)  
+- B: application runtime config (vitesses, targetScore...)  
+- A: table match_config + validation JSON  
+- C: formulaire création config + preview paramètres  
+
+Phase 7 (Stats)  
+- A: agrégations SQL + éventuellement cache  
+- B: instrumentation (collect rally length, vitesse)  
+- C: dashboards (graphiques simples canvas/SVG)  
+
+Phase 8 (Polish & Tests)  
+- A: hardening HTTPS + headers + audit env  
+- B: test charge léger (simulation 20 matchs AI)  
+- C: UX raffinements + messages d’erreur unifiés  
+
+### Points d’intégration obligatoires
+- Fin Phase 1: API /auth + moteur isolé = démo login + partie locale.  
+- Fin Phase 3: Deux navigateurs jouent en remote (base).  
+- Fin Phase 5: Partie vs IA + remplacement joueur déco.  
+- Fin Phase 7: Dashboards alimentés par données réelles.  
+
+### Limites WIP
+- Max 2 features simultanées / dev.
+- Pas de nouvelle feature si dette tests > 10% lignes modifiées non couvertes script simulation.
+
+### Communication
+- Stand-up quotidien (≤10 min).
+- Revue protocole WS avant implémentation (schéma JSON figé).
+- Retro courte fin de chaque phase (ce qui bloque, ajustements).
+
+### Risques & Mitigation
+- Goulot Backend: A surchargé → B/C aident sur endpoints simples.
+- Désync jeu: snapshots autoritaires + outil diff state (console).  
+- Glissement stats: instrumentation légère dès Phase 3 (éviter refactor tardif).  
+
+### Critère “Done” (résumé)
+- Backend: test curl + seed + migration reproductible.
+- Gameplay: 3 matchs consécutifs sans désync > 100 ms sur balle.
+- Chat: DM + blocage vérifiés (message bloqué non reçu).
+- IA: win-rate configurable (50% ± 15% sur 20 matchs par défaut).
+- Custom: paramètres visibles et réellement appliqués (log serveur).
+- Stats: variation visible après nouveaux matchs.
+
+### Répartition charge (approx %)
+- A: 35%
+- B: 40%
+- C: 35%
+Rééquilibrage en Phase 7 (C plus chargé → A/B aident sur visualisations simples).
+
+### Outils recommandés internes
+- Script simulate_matches.ts (spawns N IA vs IA) – B initial, A maintient.
+- checker_state.ts (compare state serveur vs client) – B.
+- seed.ts (users + matches) – A.
+- generate_stats.ts (force recalcul) – A.
+
+### Première semaine (objectif concret)
+Jour 2: moteur local + auth mock + layout  
+Jour 4: migrations + auth réelle + moteur serveur ticking  
+Jour 5: début WS protocole + UI écoute STATE  
+
+Fin S1: Partie remote minimale jouable (sans chat).  
+
+---
