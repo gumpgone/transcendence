@@ -276,3 +276,29 @@ Jour 5: début WS protocole + UI écoute STATE
 Fin S1: Partie remote minimale jouable (sans chat).  
 
 ---
+
+## Short List – Répartition Modules
+
+Greg (Dev A – Backend & Infra)
+- Major: Backend Framework (Fastify)
+- Major: Standard User Management (auth, sessions, friends, avatars)
+- Major: Live Chat (stockage + endpoints + blocage)
+- Minor: Database (SQLite)
+- Minor: Stats Dashboards (agrégations / API)
+- Minor: Game Customization (table + validation)
+
+Wallid (Dev B – Gameplay / Temps Réel / IA)
+- Major: Remote Players (WS protocole, sync, déconnexions)
+- Major: AI Opponent (logique prédiction / inputs simulés)
+- Major: Live Chat (événements temps réel, invitations)
+- Minor: Game Customization (application runtime)
+- Minor: Stats Dashboards (instrumentation match)
+- (Core) Tournoi & Matchmaking (structure + annonces)
+
+Mehdi (Dev C – Frontend & UX)
+- Minor: Frontend Toolkit (Tailwind)
+- Major: Standard User Management (UI formulaires / profils)
+- Major: Live Chat (UI DM / global / invites / profils)
+- Major: Remote Players (affichage match, latence, spectateur)
+- Minor: Stats Dashboards (charts / navigation)
+- Minor: Game Customization (UI création / sélection configs)
