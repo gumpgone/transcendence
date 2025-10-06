@@ -12,7 +12,7 @@ Greg:
 Mehdi:(WEB) Minor module :Use a framework or a toolkit to build the frontend
 
 
-MW collab front/back:  Major module :Standard user management
+Mehdi et Wassim collab front/back:  Major module :Standard user management
 
 Wassim:(WEB) Major module :use a framework to build the backend ( voir si on prend database dans ce cas minor module database for the backend)
 	(WEB) Minor module :data base for the backend
