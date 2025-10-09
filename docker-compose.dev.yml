@@ -1,0 +1,15 @@
+services:
+  web-dev:
+    image: node:18-alpine
+    working_dir: /app/web
+    ports:
+      - "5173:5173"   # Vite
+    volumes:
+      - ./web:/app/web:cached
+    command: >
+      sh -lc "
+        set -e;
+        if [ -f package-lock.json ]; then npm ci; else npm i; fi;
+        npm run tw:dev & 
+        npm run dev
+      "
